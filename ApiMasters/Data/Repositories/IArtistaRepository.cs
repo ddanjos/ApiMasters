@@ -4,11 +4,14 @@ namespace ApiMasters.Data.Repositories
 {
     public interface IArtistaRepository
     {
-        Task<Artista?> CriarAsync(Artista artista);
-        Task<Artista?> AtualizarAsync(Artista artista);
-        Task DeletarAsync(int id);
+        Task<List<Artista>> ObterTodosAsync();
         Task<Artista?> ObterPorIdAsync(int id);
-        Task<IEnumerable<Artista>> BuscarPorNomeAsync(string termoBusca);
-        Task<IEnumerable<Artista>> ObterTodosAsync();
+        Task<List<Artista>> BuscarPorNomeAsync(string termoBusca);
+    
+        void Criar(Artista artista);
+        void Atualizar(Artista artista);
+        void Deletar(Artista artista);
+    
+        Task<int> SalvarAlteracoesAsync();
     }
 }

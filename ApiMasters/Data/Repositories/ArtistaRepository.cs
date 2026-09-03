@@ -1,4 +1,5 @@
 ﻿using ApiMasters.Models;
+using Microsoft.EntityFrameworkCore;
 
 namespace ApiMasters.Data.Repositories
 {
@@ -11,34 +12,45 @@ namespace ApiMasters.Data.Repositories
             _context = context;
         }   
 
-        public Task<Artista?> AtualizarAsync(Artista artista)
+        public void Atualizar(Artista artista)
         {
-            throw new NotImplementedException();
+             _context.Artistas.Update(artista);
         }
 
-        public Task<IEnumerable<Artista>> BuscarPorNomeAsync(string termoBusca)
+
+        public void Criar(Artista artista)
         {
-            throw new NotImplementedException();
+             _context.Artistas.Add(artista);
+        }
+        
+        public void Deletar(Artista artista)
+        {
+             _context.Artistas.Remove(artista);
         }
 
-        public Task<Artista?> CriarAsync(Artista artista)
+        public Task<List<Artista>> BuscarPorNomeAsync(string termoBusca)
         {
-            throw new NotImplementedException();
+            return _context.Artistas
+                .AsNoTracking()
+                .Where(a => a.Nome.Contains(termoBusca))
+                .ToListAsync();
         }
-
-        public Task DeletarAsync(int id)
-        {
-            throw new NotImplementedException();
-        }
-
+        
         public Task<Artista?> ObterPorIdAsync(int id)
         {
-            throw new NotImplementedException();
+            return _context.Artistas.FindAsync(id).AsTask();
         }
-
-        public Task<IEnumerable<Artista>> ObterTodosAsync()
+        
+        public Task<List<Artista>> ObterTodosAsync()
         {
-            throw new NotImplementedException();
+            return _context.Artistas
+                .AsNoTracking()
+                .ToListAsync();
+        }
+        
+        public Task<int> SalvarAlteracoesAsync()
+        {
+            return _context.SaveChangesAsync();
         }
     }
 }
