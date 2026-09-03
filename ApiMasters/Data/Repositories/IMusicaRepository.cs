@@ -4,12 +4,15 @@ namespace ApiMasters.Data.Repositories
 {
     public interface IMusicaRepository
     {
-        Task<Musica> CriarAsync(Musica musica);
-        Task<Musica?> ObterPorIdAsync(Guid id);
-        Task<IEnumerable<Musica>> ObterTodasAsync();
-        Task<IEnumerable<Musica>> ObterPorArtistaIdAsync(Guid artistaId);
-        Task<IEnumerable<Musica>> ObterPorGeneroIdAsync(int generoId);
-        Task AtualizarAsync(Musica musica);
-        Task DeletarAsync(Guid id);
+        void Criar(Musica musica);
+        void Atualizar(Musica musica);
+        void Deletar(Musica musica);
+        Task<int> SalvarAlteracoesAsync();
+        Task<Musica?> ObterPorIdAsync(int id);
+        Task<List<Musica>> ObterTodasAsync();
+        Task<List<Musica>> ObterPorArtistaIdAsync(int id);
+        Task<List<Musica>> ObterPorGeneroIdAsync(int generoId);
+     
+
     }
 }
