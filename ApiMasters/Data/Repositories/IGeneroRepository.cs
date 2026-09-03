@@ -4,10 +4,12 @@ namespace ApiMasters.Data.Repositories
 {
     public interface IGeneroRepository
     {
-        Task<Genero> CriarAsync(Genero genero);
+        void Criar(Genero genero);
+        void Atualizar(Genero genero);
+        void Deletar(Genero genero);
         Task<Genero?> ObterPorIdAsync(int id);
         Task<Genero?> ObterPorNomeAsync(string nome);
-        Task<IEnumerable<Genero>> ObterTodosAsync();
-        Task DeletarAsync(int id);
+        Task<List<Genero>> ObterTodosAsync();
+        
     }
 }
