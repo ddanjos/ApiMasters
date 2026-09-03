@@ -7,7 +7,7 @@ namespace ApiMasters.Data.Repositories
         Task<Artista?> CriarAsync(Artista artista);
         Task<Artista?> AtualizarAsync(Artista artista);
         Task DeletarAsync(int id);
-        Task <Artista?> ObterPorIdAsync(int id)
+        Task<Artista?> ObterPorIdAsync(int id);
         Task<IEnumerable<Artista>> BuscarPorNomeAsync(string termoBusca);
         Task<IEnumerable<Artista>> ObterTodosAsync();
     }
