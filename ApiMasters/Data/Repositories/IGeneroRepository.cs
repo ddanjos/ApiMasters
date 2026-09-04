@@ -10,6 +10,6 @@ namespace ApiMasters.Data.Repositories
         Task<Genero?> ObterPorIdAsync(int id);
         Task<Genero?> ObterPorNomeAsync(string nome);
         Task<List<Genero>> ObterTodosAsync();
-        
+        Task<int> SalvarAlteracoesAsync();
     }
 }
