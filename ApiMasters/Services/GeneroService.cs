@@ -55,4 +55,11 @@ public class GeneroService : IGeneroService
         await _repository.SalvarAlteracoesAsync();
         return true;
     }
+    
+    public async Task<List<Genero>> ObterPorIdsAsync(List<int> ids)
+    {
+        if (ids == null || !ids.Any()) return new List<Genero>();
+    
+        return await _repository.ObterPorIdsAsync(ids);
+    }
 }
