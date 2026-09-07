@@ -68,4 +68,31 @@ public class ArtistaController : ControllerBase
         
         return Ok(artistaResposta);
     }
+    
+    [HttpGet("buscar/{nome}")]
+    public async Task<ActionResult<List<ArtistaRespostaDto>>> ObterPorNome(string nome)
+    {
+        var artistas = await _service.BuscarPorNomeAsync(nome);
+        
+        if (artistas == null || !artistas.Any()) 
+            return NotFound($"Nenhum artista encontrado com o nome '{nome}'.");
+
+        var artistaResposta = artistas.Select(a => new ArtistaRespostaDto
+        {
+            Id = a.Id,
+            Nome = a.Nome,
+            Nacionalidade = a.Nacionalidade
+        }).ToList();
+
+        return Ok(artistaResposta);
+    }
+
+    [HttpDelete("{id:int}")]
+    public async Task<ActionResult> Delete(int id)
+    {
+        var deletado  = await _service.DeletarAsync(id);
+        if (!deletado) return NotFound();
+
+        return NoContent();
+    }
 }   

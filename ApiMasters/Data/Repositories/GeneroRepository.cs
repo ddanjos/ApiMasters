@@ -50,4 +50,11 @@ public class GeneroRepository : IGeneroRepository
     {
         return _context.SaveChangesAsync();
     }
+    
+    public async Task<List<Genero>> ObterPorIdsAsync(List<int> ids)
+    {
+        return await _context.Generos
+            .Where(g => ids.Contains(g.Id))
+            .ToListAsync();
+    }
 }

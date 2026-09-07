@@ -32,7 +32,7 @@ namespace ApiMasters.Data.Repositories
         {
             return _context.Artistas
                 .AsNoTracking()
-                .Where(a => a.Nome.Contains(termoBusca))
+                .Where(a => EF.Functions.Like(a.Nome, $"%{termoBusca}%"))
                 .ToListAsync();
         }
         
