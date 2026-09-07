@@ -20,13 +20,19 @@ public class MusicaRepository : IMusicaRepository
     public Task<Musica?> ObterPorIdAsync(int id)
     {
         return _context.Musicas.
-            AsNoTracking()
+            Include(musica => musica.Generos )
+            .Include(m => m.Artista)
+            .AsNoTracking()
             .FirstOrDefaultAsync(m => m.Id == id);
     }
 
     public Task<List<Musica>> ObterTodasAsync()
     {
-        return _context.Musicas.AsNoTracking().ToListAsync();
+        return _context.Musicas
+            .Include(m=> m.Generos)
+            .Include(m => m.Artista )
+            .AsNoTracking()
+            .ToListAsync();
     }
 
     public Task<List<Musica>> ObterPorArtistaIdAsync(int id)
