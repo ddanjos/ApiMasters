@@ -1,7 +1,7 @@
 Criar uma api com duas ou mais entidades.
 
--> Deve existir uma relacao de 1-n entre as entidades
+-> Deve existir uma relacao de 1-n entre as entidades - ok 
 
--> A Api deve ter pelo menos 2 filtros na entidade principal
+-> A Api deve ter pelo menos 2 filtros na entidade principal - a fazer
 
--> O Banco de dados é a escolha do aluno
+-> O Banco de dados é a escolha do aluno -- sqllite para nao ter que subir db no pc
