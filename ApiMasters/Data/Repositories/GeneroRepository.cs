@@ -1,5 +1,6 @@
 using ApiMasters.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query.SqlExpressions;
 
 namespace ApiMasters.Data.Repositories;
 
@@ -32,11 +33,12 @@ public class GeneroRepository : IGeneroRepository
         return _context.Generos.FindAsync(id).AsTask();
     }
 
-    public Task<Genero?> ObterPorNomeAsync(string nome)
+    public async Task<List<Genero>> ObterPorNomeAsync(string nome)
     {
-        return _context.Generos
+        return await _context.Generos
             .AsNoTracking()
-            .FirstOrDefaultAsync(g => g.Nome == nome);
+            .Where(g => g.Nome.Contains(nome))
+            .ToListAsync();
     }
 
     public Task<List<Genero>> ObterTodosAsync()
