@@ -7,7 +7,6 @@ namespace ApiMasters.Controllers;
 
 [ApiController]
 [Route("api/[controller]")]
-
 public class ArtistaController : ControllerBase
 {
     private readonly IArtistaService _service;
@@ -26,14 +25,44 @@ public class ArtistaController : ControllerBase
             Id = artista.Id,
             Nome = artista.Nome,
             Nacionalidade = artista.Nacionalidade
-
         }).ToList();
         
         return Ok(listaResposta);
     }
 
+    [HttpGet("{id:int}")]
+    public async Task<ActionResult<ArtistaRespostaDto>> ObterPorId(int id)
+    {
+        var artista = await _service.ObterPorIdAsync(id);
+        if (artista is null) return NotFound();
+
+        var artistaResposta = new ArtistaRespostaDto
+        {
+            Id = artista.Id,
+            Nome = artista.Nome,
+            Nacionalidade = artista.Nacionalidade
+        };
+        
+        return Ok(artistaResposta);
+    }
+
+    [HttpGet("buscar")]
+    public async Task<ActionResult<List<ArtistaRespostaDto>>> ObterPorNome([FromQuery] string nome)
+    {
+        var artistas = await _service.BuscarPorNomeAsync(nome);
+        
+        var artistaResposta = artistas.Select(a => new ArtistaRespostaDto
+        {
+            Id = a.Id,
+            Nome = a.Nome,
+            Nacionalidade = a.Nacionalidade
+        }).ToList();
+
+        return Ok(artistaResposta);
+    }
+
     [HttpPost]
-    public async Task<ActionResult<ArtistaRespostaDto>> Post([FromBody] ArtistaCriacaoDto dto)
+    public async Task<ActionResult<ArtistaRespostaDto>> Criar([FromBody] ArtistaCriacaoDto dto)
     {
         var artista = new Artista
         {
@@ -45,54 +74,43 @@ public class ArtistaController : ControllerBase
 
         var artistaResposta = new ArtistaRespostaDto
         {
-            Id = artista.Id,
-            Nome = artista.Nome,
-            Nacionalidade = artista.Nacionalidade
+            Id = novoArtista.Id,
+            Nome = novoArtista.Nome,
+            Nacionalidade = novoArtista.Nacionalidade
         };
         
         return CreatedAtAction(nameof(ObterPorId), new { id = artistaResposta.Id }, artistaResposta);
     }
-    
-    [HttpGet("{id:int}")]
-    
-    public async Task<ActionResult<ArtistaRespostaDto>> ObterPorId(int id)    {
-        var artista = await _service.ObterPorIdAsync(id);
-        if (artista == null) return NotFound();
 
-        var artistaResposta = new ArtistaRespostaDto
-        {
-            Id = artista.Id,
-            Nome = artista.Nome,
-            Nacionalidade = artista.Nacionalidade
-        };
-        
-        return Ok(artistaResposta);
-    }
-    
-    [HttpGet("buscar/{nome}")]
-    public async Task<ActionResult<List<ArtistaRespostaDto>>> ObterPorNome(string nome)
+    [HttpPut("{id:int}")]
+    public async Task<ActionResult<ArtistaRespostaDto>> Atualizar(int id, [FromBody] ArtistaAlteracaoDto dto)
     {
-        var artistas = await _service.BuscarPorNomeAsync(nome);
-        
-        if (artistas == null || !artistas.Any()) 
-            return NotFound($"Nenhum artista encontrado com o nome '{nome}'.");
-
-        var artistaResposta = artistas.Select(a => new ArtistaRespostaDto
+        var artistaAtualizar = new Artista
         {
-            Id = a.Id,
-            Nome = a.Nome,
-            Nacionalidade = a.Nacionalidade
-        }).ToList();
+            Id = id,
+            Nome = dto.Nome,
+            Nacionalidade = dto.Nacionalidade
+        };
 
-        return Ok(artistaResposta);
+        var sucesso = await _service.AtualizarAsync(id, artistaAtualizar);
+        if (!sucesso) return NotFound();
+
+        var resposta = new ArtistaRespostaDto
+        {
+            Id = id,
+            Nome = artistaAtualizar.Nome,
+            Nacionalidade = artistaAtualizar.Nacionalidade
+        };
+
+        return Ok(resposta);
     }
 
     [HttpDelete("{id:int}")]
     public async Task<ActionResult> Delete(int id)
     {
-        var deletado  = await _service.DeletarAsync(id);
+        var deletado = await _service.DeletarAsync(id);
         if (!deletado) return NotFound();
 
         return NoContent();
     }
-}   
+}
