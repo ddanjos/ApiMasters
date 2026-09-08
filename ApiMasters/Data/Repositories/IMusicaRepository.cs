@@ -1,4 +1,5 @@
-﻿using ApiMasters.Models;
+﻿using ApiMasters.DTOs;
+using ApiMasters.Models;
 
 namespace ApiMasters.Data.Repositories
 {
@@ -9,7 +10,7 @@ namespace ApiMasters.Data.Repositories
         void Deletar(Musica musica);
         Task<int> SalvarAlteracoesAsync();
         Task<Musica?> ObterPorIdAsync(int id);
-        Task<List<Musica>> ObterTodasAsync();
+        Task<PagedResult<Musica>> ObterTodasAsync(MusicaFiltroDTO filtro);
         Task<List<Musica>> ObterPorArtistaIdAsync(int id);
         Task<List<Musica>> ObterPorGeneroIdAsync(int generoId);
      

@@ -1,3 +1,4 @@
+using ApiMasters.DTOs;
 using ApiMasters.Models;
 using Microsoft.EntityFrameworkCore;
 
@@ -26,13 +27,26 @@ public class MusicaRepository : IMusicaRepository
             .FirstOrDefaultAsync(m => m.Id == id);
     }
 
-    public Task<List<Musica>> ObterTodasAsync()
+    public async Task<PagedResult<Musica>> ObterTodasAsync(MusicaFiltroDTO filtro)
     {
-        return _context.Musicas
-            .Include(m=> m.Generos)
-            .Include(m => m.Artista )
-            .AsNoTracking()
+      IQueryable<Musica> query = _context.Musicas
+            .Include(m => m.Generos)
+            .Include(m => m.Artista)
+            .AsNoTracking();
+
+        var totalCount = query.Count();
+        var itens = await query.Skip(filtro.Skip)
+            .Take(filtro.PageSize)
             .ToListAsync();
+
+        return new PagedResult<Musica>
+        {
+            Items = itens,
+            Page = filtro.Page,
+            PageSize = filtro.PageSize,
+            TotalItems = totalCount
+        };
+
     }
 
     public Task<List<Musica>> ObterPorArtistaIdAsync(int id)
