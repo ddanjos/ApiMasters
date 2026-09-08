@@ -38,7 +38,8 @@ namespace ApiMasters.Data.Repositories
         
         public Task<Artista?> ObterPorIdAsync(int id)
         {
-            return _context.Artistas.FindAsync(id).AsTask();
+            return _context.Artistas
+                .FirstOrDefaultAsync(a => a.Id == id);
         }
         
         public Task<List<Artista>> ObterTodosAsync()

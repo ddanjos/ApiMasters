@@ -37,11 +37,10 @@ public class ArtistaService : IArtistaService
     {
         var existente = await _repository.ObterPorIdAsync(id);
         if (existente == null) return false;
-        
-        existente.Nome =  artistaAjustado.Nome;
+    
+        existente.Nome = artistaAjustado.Nome;
         existente.Nacionalidade = artistaAjustado.Nacionalidade;
-        _repository.Atualizar(artistaAjustado);
-        
+
         await _repository.SalvarAlteracoesAsync();
         return true;
     }
