@@ -6,7 +6,7 @@ public class ArtistaCriacaoDto
     public string Nacionalidade { get; set; } = string.Empty;
 }
 
-public class ArtistaRespostaDto
+public record ArtistaRespostaDto
 {
     public int Id { get; set; }
     public string Nome { get; set; } = string.Empty;
