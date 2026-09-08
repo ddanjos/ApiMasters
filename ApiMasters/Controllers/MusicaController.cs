@@ -17,11 +17,11 @@ public class MusicaController : ControllerBase
     }
 
     [HttpGet]
-    public async Task<ActionResult<List<MusicaRespostaDto>>> ObterTodos()
+    public async Task<ActionResult<PagedResult<MusicaRespostaDto>>> ObterTodos([FromQuery] MusicaFiltroDTO filtro)
     {
-        var musicas = await _service.ObterTodasAsync();
-    
-        var resposta = musicas.Select(m => new MusicaRespostaDto
+        var resultadoPaginado = await _service.ObterTodasAsync(filtro);
+
+        var musicasDto = resultadoPaginado.Items.Select(m => new MusicaRespostaDto
         {
             Id = m.Id,
             Nome = m.Nome,
@@ -29,12 +29,19 @@ public class MusicaController : ControllerBase
             ArtistaId = m.ArtistaId,
             Generos = m.Generos.Select(g => new GeneroRespostaDto
             {
-                Id = g.Id, 
+                Id = g.Id,
                 Nome = g.Nome
             }).ToList()
         }).ToList();
 
-        return Ok(resposta); 
+        var respostaPaginada = new PagedResult<MusicaRespostaDto>(
+            musicasDto,
+            resultadoPaginado.Page,
+            resultadoPaginado.PageSize,
+            resultadoPaginado.TotalItems
+        );
+
+        return Ok(respostaPaginada);
     }
 
     [HttpGet("{id:int}")]
