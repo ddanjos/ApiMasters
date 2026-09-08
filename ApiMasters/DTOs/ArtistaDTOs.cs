@@ -12,3 +12,10 @@ public class ArtistaRespostaDto
     public string Nome { get; set; } = string.Empty;
     public string Nacionalidade { get; set; } = string.Empty;
 }
+
+public class ArtistaAlteracaoDto
+{
+    public string Nome { get; set; } = string.Empty;
+    public string Nacionalidade { get; set; } = string.Empty;
+    
+}
