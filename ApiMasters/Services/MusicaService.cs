@@ -1,4 +1,5 @@
 using ApiMasters.Data.Repositories;
+using ApiMasters.DTOs;
 using ApiMasters.Models;
 
 namespace ApiMasters.Services;
@@ -11,10 +12,30 @@ public class MusicaService :IMusicaService
     {
         this._repository = repository;
     }
-    
-    public Task<List<Musica>> ObterTodasAsync()
+
+    public async Task<PagedResult<MusicaRespostaDto>> ObterTodasAsync(MusicaFiltroDTO filtro)
     {
-        return _repository.ObterTodasAsync();
+        var resultadoPaginado = await _repository.ObterTodasAsync(filtro);
+
+        var musicasDto = resultadoPaginado.Items.Select(m => new MusicaRespostaDto
+        {
+            Id = m.Id,
+            Nome = m.Nome,
+            Duracao = m.Duracao,
+            ArtistaId = m.ArtistaId,
+            Generos = m.Generos.Select(g => new GeneroRespostaDto
+            {
+                Id = g.Id,
+                Nome = g.Nome
+            }).ToList()
+        }).ToList();
+
+        return new PagedResult<MusicaRespostaDto>(
+            musicasDto,
+            resultadoPaginado.Page,
+            resultadoPaginado.PageSize,
+            resultadoPaginado.TotalItems
+        );
     }
 
     public Task<Musica?> ObterPorIdAsync(int id)

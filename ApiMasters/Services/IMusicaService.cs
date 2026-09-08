@@ -1,10 +1,11 @@
+using ApiMasters.DTOs;
 using ApiMasters.Models;
 
 namespace ApiMasters.Services;
 
 public interface IMusicaService
 {
-    Task<List<Musica>> ObterTodasAsync();
+    Task<PagedResult<MusicaRespostaDto>> ObterTodasAsync(MusicaFiltroDTO filtro);
     Task<Musica?> ObterPorIdAsync(int id);
     Task<List<Musica>> ObterPorArtistaIdAsync(int artistaId);
     Task<List<Musica>> ObterPorGeneroIdAsync(int generoId);
