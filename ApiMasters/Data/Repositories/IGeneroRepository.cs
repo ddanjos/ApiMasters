@@ -8,7 +8,7 @@ namespace ApiMasters.Data.Repositories
         void Atualizar(Genero genero);
         void Deletar(Genero genero);
         Task<Genero?> ObterPorIdAsync(int id);
-        Task<Genero?> ObterPorNomeAsync(string nome);
+        Task<List<Genero>> ObterPorNomeAsync(string nome);
         Task<List<Genero>> ObterTodosAsync();
         Task<List<Genero>> ObterPorIdsAsync(List<int> ids);
         Task<int> SalvarAlteracoesAsync();

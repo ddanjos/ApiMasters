@@ -22,9 +22,9 @@ public class GeneroService : IGeneroService
         return await _repository.ObterPorIdAsync(id);
     }
 
-    public Task<Genero?> ObterPorNomeAsync(string nome)
+    public Task<List<Genero>> ObterPorNomeAsync(string nome)
     {
-        return  _repository.ObterPorNomeAsync(nome);
+        return _repository.ObterPorNomeAsync(nome);
     }
 
     public async Task<Genero> CriarAsync(Genero genero)
