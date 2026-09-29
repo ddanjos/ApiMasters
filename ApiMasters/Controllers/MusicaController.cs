@@ -10,14 +10,14 @@ namespace ApiMasters.Controllers;
 public class MusicaController : ControllerBase
 {
     private readonly IMusicaService _service;
-    
+
     public MusicaController(IMusicaService service)
     {
         _service = service;
     }
 
     [HttpGet]
-    public async Task<ActionResult<PagedResult<MusicaRespostaDto>>> ObterTodos([FromQuery] MusicaFiltroDTO filtro)
+    public async Task<ActionResult<PagedResult<MusicaRespostaDto>>> ObterTodos([FromQuery] MusicaFiltroDto filtro)
     {
         var resultadoPaginado = await _service.ObterTodasAsync(filtro);
 
@@ -58,19 +58,19 @@ public class MusicaController : ControllerBase
             Duracao = musica.Duracao,
             Generos = musica.Generos.Select(g => new GeneroRespostaDto
             {
-                Id = g.Id, 
+                Id = g.Id,
                 Nome = g.Nome
             }).ToList()
         };
 
-        return Ok(resposta); 
+        return Ok(resposta);
     }
 
     [HttpPost]
     public async Task<ActionResult<MusicaRespostaDto>> Adicionar([FromBody] MusicaCriacaoDto dto, [FromServices] IGeneroService serviceGenero)
     {
         var generosDoBanco = await serviceGenero.ObterPorIdsAsync(dto.GenerosIds);
-        
+
         var novaMusica = new Musica
         {
             Nome = dto.Nome,
@@ -78,9 +78,9 @@ public class MusicaController : ControllerBase
             ArtistaId = dto.ArtistaId,
             Generos = generosDoBanco
         };
-        
+
         var musicaCriada = await _service.CriarAsync(novaMusica);
-        
+
         var resposta = new MusicaRespostaDto
         {
             Id = musicaCriada.Id,
@@ -102,7 +102,7 @@ public class MusicaController : ControllerBase
     {
         var encontrado = await _service.DeletarAsync(id);
         if (!encontrado) return NotFound();
-        
+
         return NoContent();
     }
 }

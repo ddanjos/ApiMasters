@@ -27,26 +27,21 @@ public class MusicaRepository : IMusicaRepository
             .FirstOrDefaultAsync(m => m.Id == id);
     }
 
-    public async Task<PagedResult<Musica>> ObterTodasAsync(MusicaFiltroDTO filtro)
+    public async Task<PagedResult<Musica>> ObterTodasAsync(MusicaFiltroDto filtro)
     {
-      IQueryable<Musica> query = _context.Musicas
+        IQueryable<Musica> query = _context.Musicas
             .Include(m => m.Generos)
             .Include(m => m.Artista)
             .AsNoTracking();
 
-        var totalCount = query.Count();
-        var itens = await query.Skip(filtro.Skip)
+        var totalCount = await query.CountAsync(); // Dica: Use CountAsync para ser assíncrono!
+
+        var itens = await query.Skip((filtro.Page - 1) * filtro.PageSize)
             .Take(filtro.PageSize)
             .ToListAsync();
 
-        return new PagedResult<Musica>
-        {
-            Items = itens,
-            Page = filtro.Page,
-            PageSize = filtro.PageSize,
-            TotalItems = totalCount
-        };
-
+        // Correção: Passando os valores diretamente para o construtor da classe
+        return new PagedResult<Musica>(itens, filtro.Page, filtro.PageSize, totalCount);
     }
 
     public Task<List<Musica>> ObterPorArtistaIdAsync(int id)
@@ -77,4 +72,5 @@ public class MusicaRepository : IMusicaRepository
     {
        return _context.SaveChangesAsync();
     }
+
 }

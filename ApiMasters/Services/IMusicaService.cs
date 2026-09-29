@@ -5,7 +5,7 @@ namespace ApiMasters.Services;
 
 public interface IMusicaService
 {
-    Task<PagedResult<MusicaRespostaDto>> ObterTodasAsync(MusicaFiltroDTO filtro);
+    Task<PagedResult<MusicaRespostaDto>> ObterTodasAsync(MusicaFiltroDto filtro);
     Task<Musica?> ObterPorIdAsync(int id);
     Task<List<Musica>> ObterPorArtistaIdAsync(int artistaId);
     Task<List<Musica>> ObterPorGeneroIdAsync(int generoId);

@@ -9,10 +9,10 @@
 
     namespace ApiMasters.Controllers;
 
-    [ApiController]
-    [Route("[controller]")]
-    public class AuthController(IConfiguration config) : ControllerBase
-    {
+[ApiController]
+[Route("/api/[controller]")] // <--- Aqui está faltando o prefixo "api/"
+public class AuthController(IConfiguration config) : ControllerBase
+{
         private static readonly List<Usuario> _usuarios =
         [
         new("Celia Csharp", "123", "Admin"),
@@ -29,10 +29,10 @@
             if (usuario is null) return Unauthorized("Login ou senha inválidos");
 
         var claims = new[]
-            {
-                    new Claim(ClaimTypes.Name, usuario.User),
-                    new Claim("role", usuario.Role) // <--- Mude de ClaimTypes.Role para "role" (minúsculo)
-                };
+             {
+                new Claim(ClaimTypes.Name, usuario.User),
+                new Claim("role", usuario.Role) // Usando uma string limpa e direta
+            };
 
         var chave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Key"]));
 

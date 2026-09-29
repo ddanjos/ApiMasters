@@ -13,7 +13,7 @@ public class MusicaService :IMusicaService
         this._repository = repository;
     }
 
-    public async Task<PagedResult<MusicaRespostaDto>> ObterTodasAsync(MusicaFiltroDTO filtro)
+    public async Task<PagedResult<MusicaRespostaDto>> ObterTodasAsync(MusicaFiltroDto filtro)
     {
         var resultadoPaginado = await _repository.ObterTodasAsync(filtro);
 

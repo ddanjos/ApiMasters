@@ -45,3 +45,10 @@ public class MusicaAlteracaoDto
     [Required(ErrorMessage = "Pelo menos um gênero deve ser informado.")]
     public List<int> GenerosIds { get; set; } = new();
 }
+
+public class MusicaFiltroDto
+{
+    public int Page { get; set; } = 1;
+    public int PageSize { get; set; } = 10;
+    public string? Nome { get; set; } // Adicione os filtros que sua aplicação precisa (ex: nome, artista, etc.)
+}
