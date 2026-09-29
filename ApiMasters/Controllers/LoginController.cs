@@ -1,23 +1,23 @@
 ﻿
-    using ApiMasters.Models;
-    using Microsoft.AspNetCore.Identity.Data;
-    using Microsoft.AspNetCore.Mvc;
-    using Microsoft.IdentityModel.Tokens;
-    using System.IdentityModel.Tokens.Jwt;
-    using System.Security.Claims;
-    using System.Text;
+using ApiMasters.Models;
+using Microsoft.AspNetCore.Identity.Data;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.IdentityModel.Tokens;
+using System.IdentityModel.Tokens.Jwt;
+using System.Security.Claims;
+using System.Text;
 
-    namespace ApiMasters.Controllers;
+namespace ApiMasters.Controllers;
 
 [ApiController]
 [Route("api/[controller]")] // <--- O erro está aqui!
 public class AuthController(IConfiguration config) : ControllerBase
 {
-        private static readonly List<Usuario> _usuarios =
-        [
-        new("Celia Csharp", "123", "Admin"),
+    private static readonly List<Usuario> _usuarios =
+    [
+    new("Celia Csharp", "123", "Admin"),
         new("Asaaf Asp.Net", "124", "Aluno")
-        ];
+    ];
 
 
 
@@ -29,14 +29,12 @@ public class AuthController(IConfiguration config) : ControllerBase
         if (usuario is null) return Unauthorized("Login ou senha inválidos");
 
         var claims = new[]
-        {
-        new Claim(ClaimTypes.Name, usuario.User),
-        new Claim("role", usuario.Role)
-    };
+ {
+    new Claim(ClaimTypes.Name, usuario.User),
+    new Claim(ClaimTypes.Role, usuario.Role)
+};
 
-        // CHAVE FIXA DE TESTE (Mais de 32 caracteres)
-        var secretKey = "chave_super_secreta_fixa_para_testes_1234567890_abcde";
-        var chave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+        var chave = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(config["JWT:Key"]!));
 
         var token = new JwtSecurityToken(
             issuer: config["JWT:Issuer"],
@@ -52,4 +50,4 @@ public class AuthController(IConfiguration config) : ControllerBase
     public record LoginDto(String login, string password);
 
 
-    }
+}
