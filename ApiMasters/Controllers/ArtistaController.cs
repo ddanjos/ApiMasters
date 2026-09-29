@@ -1,6 +1,7 @@
 using ApiMasters.DTOs;
 using ApiMasters.Models;
 using ApiMasters.Services;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace ApiMasters.Controllers;
@@ -16,6 +17,8 @@ public class ArtistaController : ControllerBase
         _service = service;
     }
 
+
+    [Authorize(Roles = "Admin")]
     [HttpGet]
     public async Task<ActionResult<List<ArtistaRespostaDto>>> ObterTodos()
     {
